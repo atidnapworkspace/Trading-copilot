@@ -2,6 +2,9 @@ name: Source spike (manual)
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/spike.yml"
 
 permissions:
   contents: write
@@ -17,6 +20,10 @@ jobs:
           python-version: "3.13"
       - run: pip install -r pipeline/requirements.txt
       - run: python -m pytest pipeline/tests -q
+      - name: Check secret is present (length only)
+        env:
+          SEC_CONTACT_EMAIL: ${{ secrets.SEC_CONTACT_EMAIL }}
+        run: echo "SEC_CONTACT_EMAIL length=${#SEC_CONTACT_EMAIL}"
       - name: Run spike
         env:
           SEC_CONTACT_EMAIL: ${{ secrets.SEC_CONTACT_EMAIL }}
