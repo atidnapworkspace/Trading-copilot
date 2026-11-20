@@ -23,11 +23,11 @@ jobs:
       - run: python -m pytest pipeline/tests -q
       - name: Check secret is present (length only)
         env:
-          SEC_CONTACT_EMAIL: ${{ secrets.SEC_CONTACT_EMAIL || secrets.SEC_CONTAC_EMAIL }}
+          SEC_CONTACT_EMAIL: ${{ secrets.SEC_CONTACT_EMAIL }}
         run: echo "SEC_CONTACT_EMAIL length=${#SEC_CONTACT_EMAIL}"
       - name: Run spike
         env:
-          SEC_CONTACT_EMAIL: ${{ secrets.SEC_CONTACT_EMAIL || secrets.SEC_CONTAC_EMAIL }}
+          SEC_CONTACT_EMAIL: ${{ secrets.SEC_CONTACT_EMAIL }}
           SPIKE_OUT: docs/spike-results-actions.md
           SPIKE_ORIGIN: GitHub Actions (ubuntu-latest, IP de datacenter)
         run: python pipeline/spike_sources.py

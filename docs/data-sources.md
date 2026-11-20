@@ -23,7 +23,8 @@ Base: `docs/spike-results.md` (corrido desde PC residencial el 2026-11-20). **Fa
 - ✅ Igual que en la PC: Nasdaq Trader, Yahoo (precios, fundamentales, 10y), OKX, CoinGecko, data912 (acciones, cedears, bonos, histórico), dolarapi, Binance spot público.
 - ❌ **Binance futures: HTTP 451** (ubicación restringida) y **Bybit: HTTP 403** (bloquea EE.UU.) => **OKX es la única fuente de derivados cripto en producción**. Binance spot (`data-api.binance.vision`) sirve como respaldo de precio.
 - ❌ BYMA y Stooq: mismo fallo que en la PC (descartados).
-- ⚠️ SEC EDGAR: no se pudo probar desde Actions; el secreto `SEC_CONTACT_EMAIL` llegó vacío (ticker->CIK dio 403 por falta de User-Agent identificado). Re-probar al corregir el secreto.
+- ✅ SEC EDGAR desde Actions (companyfacts de AAPL 3,7 MB y 10.398 ticker->CIK) una vez corregido el secreto `SEC_CONTACT_EMAIL`. Sin User-Agent identificado la SEC responde 403.
+- Balance final desde Actions: **15 de 20 fuentes OK**. Descartadas: Stooq, BYMA (x2), Binance futures, Bybit. Pendientes de key: Polygon/Massive, Finnhub.
 
 ## Implicancias de diseño
 - data912 pasa a ser la fuente primaria de Argentina (en vivo e histórico). Es no oficial: Yahoo `.BA` queda de respaldo y de cruce.
