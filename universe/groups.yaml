@@ -1,0 +1,11 @@
+# Grupos propios del owner (seed tomado de su planilla actual; se completa luego).
+# Un ticker puede estar en varios grupos (N:M). "Mineras" está incompleto: la captura se cortó.
+US:
+  Bancos: [JPM, BAC, C, WFC, GS, MS]
+  Ciberseguridad: [FTNT, CRWD, PANW, CHKP, ZS, OKTA]
+  Tecnologicas Tier1: [AAPL, MSFT, AMZN, META, GOOGL]
+  Tecnologicas Tier2: [NVDA, CRM, NOW, ADBE, SHOP]
+  Retail (E-commerce): [WMT, COST, TGT, HD]
+  Semiconductores: [NVDA, AMD, INTC, TXN, ASML]
+  Energia Renovable: [TSLA, NEE, ENPH, FSLR, PLUG]
+  Mineras: [GOLD]   # TODO: completar
