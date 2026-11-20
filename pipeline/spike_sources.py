@@ -15,7 +15,7 @@ from pathlib import Path
 import requests
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / "docs" / "spike-results.md"
+OUT = ROOT / os.environ.get("SPIKE_OUT", "docs/spike-results.md")
 CONTACT = os.environ.get("SEC_CONTACT_EMAIL", "")
 BROWSER_UA = "Mozilla/5.0 (compatible; TradingCopilotSpike/0.1)"
 TIMEOUT = 25
@@ -231,9 +231,9 @@ def main():
         check(name, fn)
         time.sleep(1.2)  # be polite
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    origin = os.environ.get("SPIKE_ORIGIN", "la PC del owner (IP residencial)")
     lines = [f"# Spike de fuentes — {ts}", "",
-             "Ejecutado desde la PC del owner (IP residencial). **Los resultados desde GitHub Actions "
-             "pueden diferir (IPs de datacenter/EE.UU.)**: repetir allí.", "",
+             f"Ejecutado desde: {origin}.", "",
              "| Fuente | Estado | Seg | Detalle |", "|---|---|---|---|"]
     for name, ok, dt, detail in results:
         lines.append(f"| {name} | {'✅' if ok else '❌'} | {dt} | {detail.replace('|', '/')} |")

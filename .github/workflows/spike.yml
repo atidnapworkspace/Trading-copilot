@@ -1,0 +1,32 @@
+name: Source spike (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  spike:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install -r pipeline/requirements.txt
+      - run: python -m pytest pipeline/tests -q
+      - name: Run spike
+        env:
+          SEC_CONTACT_EMAIL: ${{ secrets.SEC_CONTACT_EMAIL }}
+          SPIKE_OUT: docs/spike-results-actions.md
+          SPIKE_ORIGIN: GitHub Actions (ubuntu-latest, IP de datacenter)
+        run: python pipeline/spike_sources.py
+      - name: Commit result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/spike-results-actions.md
+          git commit -m "Spike results from GitHub Actions" || echo "nothing to commit"
+          git push
