@@ -1,4 +1,4 @@
-# Re-run after SEC_CONTACT_EMAIL secret was (re)created.
+# Re-run after SEC_CONTACT_EMAIL secret name was corrected.
 name: Source spike (manual)
 
 on:
