@@ -26,6 +26,18 @@ UI y textos de negocio en español. Código e identificadores en inglés.
 10. **Simplicidad:** módulos chicos, sin abstracciones ni dependencias sin necesidad demostrada.
 11. **Fases con puerta de aprobación** explícita del owner. Cada módulo define su criterio de verificación y tests.
 
+## Reglas de trabajo del owner (siempre)
+1. **Preguntar, no dar nada por sentado.** Si algo no está claro (intención, arquitectura, requisitos), preguntar antes de escribir una línea.
+2. **Primero la solución más simple** que funcione. Sin abstracciones ni flexibilidad no pedidas.
+3. **No tocar código no relacionado** con la tarea actual, aunque se pueda mejorar.
+4. **Señalar explícitamente toda incertidumbre** antes de continuar. Admitir un límite es mejor que confianza sin certeza.
+5. **Proponer mejores formas o ideas de impacto duradero**, no solo parches tácticos. El owner siempre está abierto a sugerencias.
+
+## Memoria y checkpoints
+- Al iniciar una sesión, leer `memoria/CHECKPOINT.md` e `INDEX.md` (carpeta local, NO versionada) y resumir dónde estamos antes de actuar. Verificar el estado real en el repo antes de afirmarlo.
+- Cuando el owner diga "checkpoint": actualizar `memoria/CHECKPOINT.md` y agregar entrada en `memoria/LOG.md`.
+- Nunca guardar secretos, emails ni claves en `memoria/` ni en el repo.
+
 ## Stack
 Pipeline: Python 3.13 (requests, pandas, pytest) · DB/Auth-PIN/Webhook: Supabase (Postgres + Edge Functions)
 · Web: React + Vite (SPA/PWA) en GitHub Pages · Cron: GitHub Actions · Agente: tarea programada en Claude desktop
