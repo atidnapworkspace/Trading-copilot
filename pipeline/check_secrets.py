@@ -55,11 +55,27 @@ def check_finnhub():
     return ok, f"HTTP {r.status_code}, precio presente={bool(r.status_code == 200 and r.json().get('c'))}"
 
 
+def shape_url(u):
+    return (f"empieza con https://={u.startswith('https://')}, termina en .supabase.co="
+            f"{u.rstrip('/').endswith('.supabase.co')}, tiene espacios={u != u.strip() or ' ' in u}")
+
+
+def shape_key(k):
+    kind = "sb_secret_" if k.startswith("sb_secret_") else "jwt(eyJ)" if k.startswith("eyJ") else \
+        "sb_publishable_ (NO sirve: es la clave publica)" if k.startswith("sb_publishable_") else "otro formato"
+    return f"tipo={kind}"
+
+
 def check_supabase():
-    base = env("SUPABASE_URL").rstrip("/")
-    key = env("SUPABASE_SERVICE_KEY")
+    raw_url, key = env("SUPABASE_URL"), env("SUPABASE_SERVICE_KEY")
+    print("  SUPABASE_URL:", shape_url(raw_url), "|", shape_key(key), flush=True)
+    rows.append(("Forma de SUPABASE_*", True, f"{shape_url(raw_url)}; {shape_key(key)}"))
+    base = raw_url.rstrip("/")
+    headers = {"apikey": key}
+    if not key.startswith("sb_"):
+        headers["Authorization"] = f"Bearer {key}"
     r = requests.get(f"{base}/rest/v1/instruments", params={"select": "id", "limit": "1"},
-                     headers={"apikey": key, "Authorization": f"Bearer {key}"}, timeout=25)
+                     headers=headers, timeout=25)
     return r.status_code == 200, f"HTTP {r.status_code} (esquema accesible con service role)"
 
 
