@@ -91,5 +91,16 @@ def main():
     print("\n".join(lines))
 
 
+def run():
+    try:
+        main()
+    except Exception as e:  # noqa: BLE001 - record a secret-free error summary, then fail the job
+        msg = f"# Carga del universo EE.UU. — ERROR\n\n{datetime.now(timezone.utc):%Y-%m-%d %H:%M UTC}\n\n" \
+              f"`{type(e).__name__}`: {str(e)[:800]}\n"
+        (ROOT / "docs" / "load-universe-result.md").write_text(msg, encoding="utf-8")
+        print(msg)
+        raise
+
+
 if __name__ == "__main__":
-    main()
+    run()
