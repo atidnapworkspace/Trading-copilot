@@ -61,6 +61,6 @@ class Supa:
         self._request("PATCH", table, params=params, json=body, prefer="return=minimal")
 
     def count(self, table, params=None):
-        r = self._request("GET", table, params=dict(params or {}, select="id", limit=1),
+        r = self._request("GET", table, params=dict(params or {}, select="*", limit=1),
                           prefer="count=exact", extra_headers={"Range-Unit": "items", "Range": "0-0"})
         return int(r.headers.get("Content-Range", "*/0").split("/")[-1])
