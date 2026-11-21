@@ -11,6 +11,8 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from tcp.polygon import Polygon
+from tcp.retention import STATE_KEY as BACKUP_KEY
+from tcp.retention import cutoff, month_bounds, months_to_delete
 from tcp.supa import Supa
 from tcp.validators import validate_bar
 
@@ -50,6 +52,22 @@ def bars_to_rows(results: list[dict], symbol_to_id: dict[str, int], d: str,
         rows.append({"instrument_id": iid, "d": d, "open": o, "high": h, "low": l, "close_raw": c,
                      "close_adj": None, "volume": v, "source": "polygon", "quality": q})
     return rows, stats
+
+
+def apply_retention(db: Supa, today: date) -> tuple[int, str]:
+    """Delete only months backed up on the owner's PC AND older than the cutoff. Returns (deleted, warning)."""
+    st = db.select_all("ingest_state", {"select": "value", "key": f"eq.{BACKUP_KEY}"})
+    done = set(st[0]["value"].get("months", [])) if st else set()
+    deleted = 0
+    for ym in months_to_delete(today, done):
+        first, last = month_bounds(ym)
+        deleted += db.delete("prices_daily", {"and": f"(d.gte.{first},d.lte.{last})"})
+    oldest = db._request("GET", "prices_daily", params={"select": "d", "order": "d.asc", "limit": 1}).json()
+    warn = ""
+    if oldest and date.fromisoformat(oldest[0]["d"]) < cutoff(today):
+        warn = (f"⚠️ Hay precios con más de 400 días sin respaldar (desde {oldest[0]['d']}): "
+                "corré el respaldo en la PC; hasta entonces no se borran.")
+    return deleted, warn
 
 
 def load_filters(db: Supa) -> dict:
@@ -101,6 +119,7 @@ def main():
         db.upsert("ingest_state", [{"key": STATE_KEY, "value": {"dates": sorted(loaded)},
                                     "updated_at": datetime.now(timezone.utc).isoformat()}], on_conflict="key")
 
+    deleted, warn = apply_retention(db, datetime.now(timezone.utc).date())
     size = db._request("POST", "rpc/db_size_mb", json={}).json()
     remaining = len(todo) - done
     lines = [
@@ -115,7 +134,10 @@ def main():
         f"- Omitidas por iliquidez: {stats['illiquid_skipped']}; fuera del universo: {stats['not_in_universe']}",
         f"- Llamadas a Polygon: {poly.calls}",
         f"- Tamaño de la base: {size} MB de 500 MB",
+        f"- Retención: {deleted} filas borradas (solo meses ya respaldados en la PC y con más de 400 días)",
     ]
+    if warn:
+        lines.append(f"- {warn}")
     (ROOT / "docs" / "ingest-eod-result.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines))
 

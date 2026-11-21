@@ -60,6 +60,11 @@ class Supa:
     def patch(self, table, params, body):
         self._request("PATCH", table, params=params, json=body, prefer="return=minimal")
 
+    def delete(self, table, params) -> int:
+        """Delete matching rows; returns how many were deleted."""
+        r = self._request("DELETE", table, params=params, prefer="return=minimal,count=exact")
+        return int(r.headers.get("Content-Range", "*/0").split("/")[-1] or 0)
+
     def count(self, table, params=None):
         r = self._request("GET", table, params=dict(params or {}, select="*", limit=1),
                           prefer="count=exact", extra_headers={"Range-Unit": "items", "Range": "0-0"})
