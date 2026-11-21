@@ -1,0 +1,40 @@
+name: Load US universe
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/load-universe.yml"
+      - "pipeline/src/tcp/jobs/load_universe.py"
+  schedule:
+    - cron: "30 11 * * 1-5"   # weekdays 11:30 UTC, before US open
+
+permissions:
+  contents: write
+
+jobs:
+  load:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install -r pipeline/requirements.txt
+      - run: python -m pytest pipeline/tests -q
+      - name: Load universe
+        env:
+          PYTHONPATH: pipeline/src
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          SEC_CONTACT_EMAIL: ${{ secrets.SEC_CONTACT_EMAIL }}
+        run: python -m tcp.jobs.load_universe
+      - name: Commit result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/load-universe-result.md
+          git commit -m "Universe load result" || echo "nothing to commit"
+          git pull --rebase
+          git push
