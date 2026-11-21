@@ -6,6 +6,7 @@ on:
     paths:
       - ".github/workflows/load-universe.yml"
       - "pipeline/src/tcp/jobs/load_universe.py"
+      - "pipeline/src/tcp/supa.py"
   schedule:
     - cron: "30 11 * * 1-5"   # weekdays 11:30 UTC, before US open
 
