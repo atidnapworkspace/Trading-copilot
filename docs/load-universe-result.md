@@ -1,5 +1,9 @@
-# Carga del universo EE.UU. — ERROR
+# Carga del universo EE.UU.
 
-2026-11-21 05:20 UTC
+Corrida: 2026-11-21 05:21 UTC
 
-`SupaError`: GET instrument_aliases -> HTTP 400: {"code":"42703","details":null,"hint":null,"message":"column instrument_aliases.id does not exist"}
+- Instrumentos en el universo: 11490 (5711 acciones, 5779 ETFs)
+- Con CIK de la SEC: 5895 (acciones con CIK: 5704 de 5711)
+- Activos en la base (US): 11490
+- Aliases en la base: 22980
+- Desactivados por salir del universo: 0
