@@ -1,13 +1,13 @@
 # Ingesta EOD EE.UU.
 
-Corrida: 2026-11-21 15:26 UTC — ventana 2025-11-15 a 2026-11-20
+Corrida: 2026-11-24 06:56 UTC — ventana 2025-11-18 a 2026-11-23
 
-- Fechas cargadas en esta corrida: 0 (feriados/sin datos: 0)
+- Fechas cargadas en esta corrida: 1 (feriados/sin datos: 0)
 - Fechas pendientes: 0
-- Filas escritas: 0 (filtros: cierre ≥ 1, volumen USD ≥ 250000)
-- Splits guardados: 1028
-- Calidad de barras: OK=0 SUSPECT=0 MISSING=0
-- Omitidas por iliquidez: 0; fuera del universo: 0
-- Llamadas a Polygon: 2
-- Tamaño de la base: 272.5 MB de 500 MB
+- Filas escritas: 7778 (filtros: cierre ≥ 1, volumen USD ≥ 250000)
+- Splits guardados: 1034
+- Calidad de barras: OK=7778 SUSPECT=0 MISSING=0
+- Omitidas por iliquidez: 3658; fuera del universo: 1439
+- Llamadas a Polygon: 3
+- Tamaño de la base: 273.6 MB de 500 MB
 - Retención: 0 filas borradas (solo meses ya respaldados en la PC y con más de 400 días)
