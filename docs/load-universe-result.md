@@ -1,9 +1,9 @@
 # Carga del universo EE.UU.
 
-Corrida: 2026-11-26 12:31 UTC
+Corrida: 2026-11-27 12:27 UTC
 
-- Instrumentos en el universo: 11509 (5713 acciones, 5796 ETFs)
-- Con CIK de la SEC: 5895 (acciones con CIK: 5703 de 5713)
-- Activos en la base (US): 11509
+- Instrumentos en el universo: 11507 (5711 acciones, 5796 ETFs)
+- Con CIK de la SEC: 5893 (acciones con CIK: 5701 de 5711)
+- Activos en la base (US): 11507
 - Aliases en la base: 23042
-- Desactivados por salir del universo: 0
+- Desactivados por salir del universo: 2
